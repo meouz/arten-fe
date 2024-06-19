@@ -57,17 +57,14 @@ class TranslateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        val dummy = listOf("January", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "February", "March",
-            "February", "March", "February", "March", "February", "March", "April")
+        val dummy = listOf(
+            "January", "February", "March", "April", "May", "June", "July", "August", "September",
+            "October", "November", "December",
+            "January", "February", "March", "April", "May", "June", "July", "August", "September",
+            "October", "November", "December",
+            "January", "February", "March", "April", "May", "June", "July", "August", "September",
+            "October", "November", "December",
+        )
         
         val dataset = dummy.map { it }.toList()
         val customAdapter = RVTranslateAdapter(dataset)
