@@ -52,18 +52,14 @@ class TranslateActivity : AppCompatActivity() {
     fun startRecording() {
         if (!permissionGranted) {
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
-            println("No permission granted")
             return
         }
-        println("Start recording")
         // start recording
         
         dirPathMediaRecorder = "$dirPath/"
         val file = File(dirPathMediaRecorder)
-        if (!file.exists()) {
+        if (!file.exists())
             file.mkdirs()
-            println("create directory")
-        }
         
         val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         filename = "audio_${dateFormat.format(Date())}"
@@ -71,7 +67,6 @@ class TranslateActivity : AppCompatActivity() {
         
         recorder = MediaRecorder()
         
-        println("set audio source")
         recorder.apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -85,16 +80,13 @@ class TranslateActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-        println("success")
     }
     
     fun pauseRecording() {
         recorder.pause()
-        println("success")
     }
     
     fun resumeRecording() {
         recorder.resume()
-        println("success")
     }
 }
