@@ -67,12 +67,9 @@ class TranslateFragment : Fragment() {
             "October", "November", "December",
             "January", "February", "March", "April", "May", "June", "July", "August", "September",
             "October", "November", "December",
-            "January", "February", "March", "April", "May", "June", "July", "August", "September",
-            "October", "November", "December",
-        )
+        ).toList()
         
-        val dataset = dummy.map { it }.toList()
-        val customAdapter = RVTranslateAdapter(dataset)
+        val customAdapter = RVTranslateAdapter(dummy)
         
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(context)
