@@ -18,6 +18,7 @@ class TranslateActivity : AppCompatActivity() {
     
     companion object {
         private var permissionGranted = false
+        private lateinit var activity: TranslateActivity
         private var dirPath = ""
     }
     
@@ -30,12 +31,13 @@ class TranslateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_translate)
         dirPath = getExternalFilesDir(null)?.absolutePath.toString()
+        activity = this
         
-        permissionGranted = ActivityCompat.checkSelfPermission(this, permissions[0]) ==
+        permissionGranted = ActivityCompat.checkSelfPermission(activity, permissions[0]) ==
                 PackageManager.PERMISSION_GRANTED
         
         if (!permissionGranted)
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
+            ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE)
     }
     
     override fun onRequestPermissionsResult(
@@ -51,8 +53,8 @@ class TranslateActivity : AppCompatActivity() {
     
     fun startRecording() {
         if (!permissionGranted) {
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
-            return
+            ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE)
+            throw Exception("Please grant permission to record audio.")
         }
         // start recording
         

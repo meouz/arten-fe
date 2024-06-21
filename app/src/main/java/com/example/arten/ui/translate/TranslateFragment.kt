@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.arten.R
 import com.example.arten.adapter.RVTranslateAdapter
@@ -30,23 +31,27 @@ class TranslateFragment : Fragment() {
         fabRecord.setOnClickListener {
             when {
                 isPaused -> {
+                    translateActivity.resumeRecording()
                     isPaused = false
                     isRecording = true
-                    translateActivity.resumeRecording()
                     fabRecord.setImageResource(R.drawable.ic_resume)
                 }
                 
                 isRecording -> {
+                    translateActivity.pauseRecording()
                     isPaused = true
                     isRecording = false
-                    translateActivity.pauseRecording()
                     fabRecord.setImageResource(R.drawable.ic_pause)
                 }
                 
                 else -> {
-                    isRecording = true
-                    translateActivity.startRecording()
-                    fabRecord.setImageResource(R.drawable.ic_resume)
+                    try {
+                        translateActivity.startRecording()
+                        isRecording = true
+                        fabRecord.setImageResource(R.drawable.ic_resume)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
