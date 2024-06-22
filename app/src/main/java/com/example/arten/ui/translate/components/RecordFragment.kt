@@ -31,7 +31,7 @@ class RecordFragment : Fragment() {
                     translateActivity.resumeRecording()
                     isPaused = false
                     isRecording = true
-                    btnRecord.setImageResource(R.drawable.ic_resume)
+                    btnRecord.setImageResource(R.drawable.ic_pause)
                     message("Resume")
                 }
                 
@@ -39,7 +39,7 @@ class RecordFragment : Fragment() {
                     translateActivity.pauseRecording()
                     isPaused = true
                     isRecording = false
-                    btnRecord.setImageResource(R.drawable.ic_pause)
+                    btnRecord.setImageResource(R.drawable.ic_resume)
                     message("Pause")
                 }
                 
@@ -47,7 +47,7 @@ class RecordFragment : Fragment() {
                     try {
                         translateActivity.startRecording()
                         isRecording = true
-                        btnRecord.setImageResource(R.drawable.ic_resume)
+                        btnRecord.setImageResource(R.drawable.ic_pause)
                         message("Recording")
                     } catch (e: Exception) {
                         message(e.message.toString())
