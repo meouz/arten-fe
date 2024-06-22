@@ -98,6 +98,10 @@ class TranslateActivity : AppCompatActivity() {
         recorder.resume()
     }
     
+    fun stopRecording() {
+        recorder.stop()
+    }
+    
     fun appear() {
         val fragmentCView =
             activity.findViewById<FragmentContainerView>(R.id.fragmentContainerView2)

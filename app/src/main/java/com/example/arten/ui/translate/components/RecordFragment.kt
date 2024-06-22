@@ -1,6 +1,9 @@
 package com.example.arten.ui.translate.components
 
+import android.content.Context
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +13,14 @@ import com.example.arten.R
 import com.example.arten.databinding.FragmentRecordBinding
 import com.example.arten.ui.translate.TranslateActivity
 
-class RecordFragment : Fragment() {
+class RecordFragment : Fragment(), Timer.OnTimerTickListener {
     
     private lateinit var binding: FragmentRecordBinding
     private val translateActivity: TranslateActivity = TranslateActivity()
     private var isRecording = false
     private var isPaused = false
+    
+    private lateinit var timer: Timer
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,23 +29,25 @@ class RecordFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentRecordBinding.inflate(inflater, container, false)
         
+        timer = Timer(this)
+        
         val btnRecord = binding.btnRecord
         btnRecord.setOnClickListener {
             when {
                 isPaused -> {
                     translateActivity.resumeRecording()
                     isPaused = false
-                    isRecording = true
                     btnRecord.setImageResource(R.drawable.ic_pause)
                     message("Resume")
+                    timer.start(100)
                 }
                 
                 isRecording -> {
                     translateActivity.pauseRecording()
                     isPaused = true
-                    isRecording = false
                     btnRecord.setImageResource(R.drawable.ic_resume)
                     message("Pause")
+                    timer.pause()
                 }
                 
                 else -> {
@@ -49,6 +56,7 @@ class RecordFragment : Fragment() {
                         isRecording = true
                         btnRecord.setImageResource(R.drawable.ic_pause)
                         message("Recording")
+                        timer.start(100)
                     } catch (e: Exception) {
                         message(e.message.toString())
                     }
@@ -63,6 +71,7 @@ class RecordFragment : Fragment() {
             isPaused = false
             btnRecord.setImageResource(R.drawable.ic_record)
             message("Delete")
+            timer.stop()
         }
         
         val btnSend = binding.btnSend
@@ -72,6 +81,7 @@ class RecordFragment : Fragment() {
             isPaused = false
             btnRecord.setImageResource(R.drawable.ic_record)
             message("Send")
+            timer.stop()
         }
         
         return binding.root
@@ -79,5 +89,9 @@ class RecordFragment : Fragment() {
     
     private fun message(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+    
+    override fun onTick(time: String) {
+        binding.tvTime.text = time
     }
 }
