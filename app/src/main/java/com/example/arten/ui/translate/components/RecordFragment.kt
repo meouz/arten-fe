@@ -38,7 +38,6 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
                     translateActivity.resumeRecording()
                     isPaused = false
                     btnRecord.setImageResource(R.drawable.ic_pause)
-                    message("Resume")
                     timer.start(100)
                 }
                 
@@ -46,7 +45,6 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
                     translateActivity.pauseRecording()
                     isPaused = true
                     btnRecord.setImageResource(R.drawable.ic_resume)
-                    message("Pause")
                     timer.pause()
                 }
                 
@@ -66,22 +64,29 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
         
         val btnDelete = binding.btnDelete
         btnDelete.setOnClickListener {
-            translateActivity.resetRecording()
-            isRecording = false
-            isPaused = false
-            btnRecord.setImageResource(R.drawable.ic_record)
-            message("Delete")
-            timer.stop()
+            try {
+                translateActivity.resetRecording()
+                isRecording = false
+                isPaused = false
+                btnRecord.setImageResource(R.drawable.ic_record)
+                message("Delete")
+                timer.stop()
+            } catch (e: Exception) {
+                message(e.message.toString())
+            }
         }
         
         val btnSend = binding.btnSend
         btnSend.setOnClickListener {
-            // send the recording
-            isRecording = false
-            isPaused = false
-            btnRecord.setImageResource(R.drawable.ic_record)
-            message("Send")
-            timer.stop()
+            try {
+                isRecording = false
+                isPaused = false
+                btnRecord.setImageResource(R.drawable.ic_record)
+                message("Send")
+                timer.stop()
+            } catch (e: Exception) {
+                message(e.message.toString())
+            }
         }
         
         return binding.root
