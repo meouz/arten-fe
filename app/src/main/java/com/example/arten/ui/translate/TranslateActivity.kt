@@ -4,8 +4,10 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentContainerView
 import com.example.arten.R
 import java.io.File
 import java.text.SimpleDateFormat
@@ -84,11 +86,27 @@ class TranslateActivity : AppCompatActivity() {
         }
     }
     
+    fun resetRecording() {
+        recorder.reset()
+    }
+    
     fun pauseRecording() {
         recorder.pause()
     }
     
     fun resumeRecording() {
         recorder.resume()
+    }
+    
+    fun appear() {
+        val fragmentCView =
+            activity.findViewById<FragmentContainerView>(R.id.fragmentContainerView2)
+        fragmentCView.visibility = View.VISIBLE
+    }
+    
+    fun disappear() {
+        val fragmentCView =
+            activity.findViewById<FragmentContainerView>(R.id.fragmentContainerView2)
+        fragmentCView.visibility = View.GONE
     }
 }
