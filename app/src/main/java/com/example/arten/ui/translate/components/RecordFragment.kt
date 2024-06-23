@@ -71,6 +71,7 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
                 btnRecord.setImageResource(R.drawable.ic_record)
                 message("Delete")
                 timer.stop()
+                onTick("00:00")
             } catch (e: Exception) {
                 message(e.message.toString())
             }
@@ -84,6 +85,7 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
                 btnRecord.setImageResource(R.drawable.ic_record)
                 message("Send")
                 timer.stop()
+                onTick("00:00")
             } catch (e: Exception) {
                 message(e.message.toString())
             }

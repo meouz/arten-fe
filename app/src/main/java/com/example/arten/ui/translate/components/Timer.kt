@@ -31,12 +31,8 @@ class Timer(listener: OnTimerTickListener) {
     }
     
     fun stop() {
-        reset()
-        handler.removeCallbacks(runnable!!)
-    }
-    
-    private fun reset() {
         time = 0L
+        handler.removeCallbacks(runnable!!)
     }
     
     private fun format(): String {
