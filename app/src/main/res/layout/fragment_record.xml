@@ -4,9 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
     android:background="@color/green_200"
+    android:paddingBottom="10dp"
     tools:context=".ui.translate.components.RecordFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        app:cardBackgroundColor="@color/green_900"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_switch_language"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="@string/language"
+            android:textColor="@color/white" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/btn_switch_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/language_to_translate"
+        android:src="@drawable/ic_switch_arrow"
+        app:layout_constraintEnd_toStartOf="@+id/language_result"
+        app:layout_constraintStart_toEndOf="@+id/language"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/purple_dark" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/language_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        app:cardBackgroundColor="@color/green_900"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_switch_language"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_language_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="@string/language"
+            android:textColor="@color/white" />
+    </androidx.cardview.widget.CardView>
 
     <ImageButton
         android:id="@+id/btn_delete"
@@ -17,37 +72,38 @@
         android:src="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/language"
         app:tint="@color/white" />
 
     <ImageButton
         android:id="@+id/btn_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/white"
         android:contentDescription="@string/resume_pause_recording"
         android:src="@drawable/ic_record"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_delete"
-        app:tint="@color/white" />
+        app:tint="@color/red" />
 
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Red button to start"
+        android:text="@string/white_button_to_start"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_switch_language" />
 
     <ImageButton
         android:id="@+id/btn_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/purple_dark"
-        android:contentDescription="@string/record_voice"
+        android:contentDescription="@string/send_voice"
         android:src="@drawable/ic_send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

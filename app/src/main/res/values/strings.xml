@@ -4,4 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_voice">Record Voice</string>
     <string name="resume_pause_recording">resume/pause recording</string>
+    <string name="language">Language</string>
+    <string name="language_to_translate">language to translate</string>
+    <string name="white_button_to_start">white button to start</string>
+    <string name="send_voice">send voice</string>
+    <string name="english">English</string>
+    <string name="indonesia">Indonesia</string>
 </resources>

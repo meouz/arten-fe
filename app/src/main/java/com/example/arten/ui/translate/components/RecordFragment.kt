@@ -91,6 +91,24 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
             }
         }
         
+        val tvLanguage = binding.tvLanguage
+        tvLanguage.text = getString(R.string.english)
+        
+        val tvLanguageResult = binding.tvLanguageResult
+        tvLanguageResult.text = getString(R.string.indonesia)
+        
+        val btnSwitchLanguage = binding.btnSwitchLanguage
+        btnSwitchLanguage.setOnClickListener {
+            try {
+//                translateActivity.switchLanguage()
+                val temp: String = tvLanguage.text.toString()
+                tvLanguage.text = tvLanguageResult.text
+                tvLanguageResult.text = temp
+            } catch (e: Exception) {
+                message(e.message.toString())
+            }
+        }
+        
         return binding.root
     }
     
