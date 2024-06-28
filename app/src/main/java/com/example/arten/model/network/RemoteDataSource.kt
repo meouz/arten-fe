@@ -1,4 +1,4 @@
-package com.example.arten.network
+package com.example.arten.model.network
 
 class RemoteDataSource {
     companion object{
