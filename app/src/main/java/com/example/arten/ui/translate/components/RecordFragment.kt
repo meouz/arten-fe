@@ -8,16 +8,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.arten.R
 import com.example.arten.databinding.FragmentRecordBinding
-import com.example.arten.ui.translate.TranslateActivity
+import com.example.arten.ui.translate.TranslateViewModel
 
 class RecordFragment : Fragment(), Timer.OnTimerTickListener {
     
     private lateinit var binding: FragmentRecordBinding
-    private val translateActivity: TranslateActivity = TranslateActivity()
-    private var isRecording = false
-    private var isPaused = false
-    
     private lateinit var timer: Timer
+    private val viewModel: TranslateViewModel = TranslateViewModel()
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,79 +24,47 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
         
         timer = Timer(this)
         
+        val tvLanguage = binding.tvLanguage
+        val tvLanguageResult = binding.tvLanguageResult
+        tvLanguage.text = viewModel.language
+        tvLanguageResult.text = viewModel.languageResult
+        
         val btnRecord = binding.btnRecord
         btnRecord.setOnClickListener {
-            when {
-                isPaused -> {
-                    translateActivity.resumeRecording()
-                    isPaused = false
-                    btnRecord.setImageResource(R.drawable.ic_pause)
-                    timer.start(100)
-                }
-                
-                isRecording -> {
-                    translateActivity.pauseRecording()
-                    isPaused = true
-                    btnRecord.setImageResource(R.drawable.ic_resume)
-                    timer.pause()
-                }
-                
-                else -> {
-                    try {
-                        translateActivity.startRecording()
-                        isRecording = true
-                        btnRecord.setImageResource(R.drawable.ic_pause)
-                        message("Recording")
-                        timer.start(100)
-                    } catch (e: Exception) {
-                        message(e.message.toString())
-                    }
-                }
+            viewModel.startRecording()
+            if (viewModel.isPaused) {
+                btnRecord.setImageResource(R.drawable.ic_resume)
+                timer.pause()
+            } else if (viewModel.isRecording) {
+                btnRecord.setImageResource(R.drawable.ic_pause)
+                timer.start(100)
             }
         }
         
         val btnDelete = binding.btnDelete
         btnDelete.setOnClickListener {
-            try {
-                translateActivity.resetRecording()
-                isRecording = false
-                isPaused = false
-                btnRecord.setImageResource(R.drawable.ic_record)
-                message("Delete")
-                timer.stop()
-                onTick("00:00")
-            } catch (e: Exception) {
-                message(e.message.toString())
-            }
+            viewModel.resetRecording()
+            btnRecord.setImageResource(R.drawable.ic_record)
+            onTick("00:00")
+            timer.stop()
+            message("Delete")
         }
         
         val btnSend = binding.btnSend
         btnSend.setOnClickListener {
-            try {
-                isRecording = false
-                isPaused = false
-                btnRecord.setImageResource(R.drawable.ic_record)
-                message("Send")
-                timer.stop()
-                onTick("00:00")
-            } catch (e: Exception) {
-                message(e.message.toString())
-            }
+            viewModel.sendRecord()
+            btnRecord.setImageResource(R.drawable.ic_record)
+            onTick("00:00")
+            timer.stop()
+            message("Send")
         }
-        
-        val tvLanguage = binding.tvLanguage
-        tvLanguage.text = getString(R.string.english)
-        
-        val tvLanguageResult = binding.tvLanguageResult
-        tvLanguageResult.text = getString(R.string.indonesia)
         
         val btnSwitchLanguage = binding.btnSwitchLanguage
         btnSwitchLanguage.setOnClickListener {
             try {
-//                translateActivity.switchLanguage()
-                val temp: String = tvLanguage.text.toString()
-                tvLanguage.text = tvLanguageResult.text
-                tvLanguageResult.text = temp
+                viewModel.switchLanguage()
+                tvLanguage.text = viewModel.language
+                tvLanguageResult.text = viewModel.languageResult
             } catch (e: Exception) {
                 message(e.message.toString())
             }
