@@ -10,10 +10,9 @@ import com.example.arten.R
 import com.example.arten.databinding.FragmentRecordBinding
 import com.example.arten.ui.translate.TranslateViewModel
 
-class RecordFragment : Fragment(), Timer.OnTimerTickListener {
+class RecordFragment : Fragment() {
     
     private lateinit var binding: FragmentRecordBinding
-    private lateinit var timer: Timer
     private val viewModel: TranslateViewModel = TranslateViewModel()
     
     override fun onCreateView(
@@ -21,8 +20,6 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentRecordBinding.inflate(inflater, container, false)
-        
-        timer = Timer(this)
         
         val tvLanguage = binding.tvLanguage
         val tvLanguageResult = binding.tvLanguageResult
@@ -34,10 +31,8 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
             viewModel.startRecording()
             if (viewModel.isPaused) {
                 btnRecord.setImageResource(R.drawable.ic_resume)
-                timer.pause()
             } else if (viewModel.isRecording) {
                 btnRecord.setImageResource(R.drawable.ic_pause)
-                timer.start(100)
             }
         }
         
@@ -45,8 +40,6 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
         btnDelete.setOnClickListener {
             viewModel.resetRecording()
             btnRecord.setImageResource(R.drawable.ic_record)
-            onTick("00:00")
-            timer.stop()
             message("Delete")
         }
         
@@ -54,8 +47,6 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
         btnSend.setOnClickListener {
             viewModel.sendRecord()
             btnRecord.setImageResource(R.drawable.ic_record)
-            onTick("00:00")
-            timer.stop()
             message("Send")
         }
         
@@ -75,9 +66,5 @@ class RecordFragment : Fragment(), Timer.OnTimerTickListener {
     
     private fun message(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-    
-    override fun onTick(time: String) {
-        binding.tvTime.text = time
     }
 }
