@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.arten.R
@@ -14,6 +16,11 @@ class RecordFragment : Fragment() {
     
     private lateinit var binding: FragmentRecordBinding
     private val viewModel: TranslateViewModel = TranslateViewModel()
+    private lateinit var btnRecord: ImageButton
+    private lateinit var btnCancel: ImageButton
+    private lateinit var btnSwitchLanguage: ImageButton
+    private lateinit var tvLanguage: TextView
+    private lateinit var tvLanguageResult: TextView
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,36 +28,26 @@ class RecordFragment : Fragment() {
     ): View {
         binding = FragmentRecordBinding.inflate(inflater, container, false)
         
-        val tvLanguage = binding.tvLanguage
-        val tvLanguageResult = binding.tvLanguageResult
+        tvLanguage = binding.tvLanguage
         tvLanguage.text = viewModel.language
+        
+        tvLanguageResult = binding.tvLanguageResult
         tvLanguageResult.text = viewModel.languageResult
         
-        val btnRecord = binding.btnRecord
+        btnRecord = binding.btnRecord
         btnRecord.setOnClickListener {
             viewModel.startRecording()
-            if (viewModel.isPaused) {
-                btnRecord.setImageResource(R.drawable.ic_resume)
-            } else if (viewModel.isRecording) {
-                btnRecord.setImageResource(R.drawable.ic_pause)
-            }
+            btnRecord.setImageResource(R.drawable.btn_stop)
         }
         
-        val btnDelete = binding.btnDelete
-        btnDelete.setOnClickListener {
+        btnCancel = binding.btnCancel
+        btnCancel.setOnClickListener {
             viewModel.resetRecording()
-            btnRecord.setImageResource(R.drawable.ic_record)
-            message("Delete")
+            btnRecord.setImageResource(R.drawable.btn_record)
+            message("Record canceled")
         }
         
-        val btnSend = binding.btnSend
-        btnSend.setOnClickListener {
-            viewModel.sendRecord()
-            btnRecord.setImageResource(R.drawable.ic_record)
-            message("Send")
-        }
-        
-        val btnSwitchLanguage = binding.btnSwitchLanguage
+        btnSwitchLanguage = binding.btnSwitchLanguage
         btnSwitchLanguage.setOnClickListener {
             try {
                 viewModel.switchLanguage()
