@@ -34,17 +34,25 @@ class RecordFragment : Fragment() {
         tvLanguageResult = binding.tvLanguageResult
         tvLanguageResult.text = viewModel.languageResult
         
-        btnRecord = binding.btnRecord
-        btnRecord.setOnClickListener {
-            viewModel.startRecording()
-            btnRecord.setImageResource(R.drawable.btn_stop)
-        }
-        
         btnCancel = binding.btnCancel
         btnCancel.setOnClickListener {
             viewModel.resetRecording()
             btnRecord.setImageResource(R.drawable.btn_record)
+            btnCancel.visibility = View.GONE
             message("Record canceled")
+        }
+        
+        btnRecord = binding.btnRecord
+        btnRecord.setOnClickListener {
+            if (viewModel.isRecording) {
+                viewModel.startRecording()
+                btnRecord.setImageResource(R.drawable.btn_stop)
+                btnCancel.visibility = View.VISIBLE
+            } else {
+                viewModel.stopRecording()
+                btnRecord.setImageResource(R.drawable.btn_record)
+                btnCancel.visibility = View.GONE
+            }
         }
         
         btnSwitchLanguage = binding.btnSwitchLanguage
