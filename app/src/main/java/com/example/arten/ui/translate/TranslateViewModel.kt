@@ -13,7 +13,6 @@ class TranslateViewModel : ViewModel() {
     }
     
     var isRecording = false
-    var isPaused = false
     var permissionGranted = false
     private lateinit var filename: String
     private lateinit var recorder: MediaRecorder
@@ -48,13 +47,8 @@ class TranslateViewModel : ViewModel() {
     
     fun startRecording() {
         when {
-            isPaused -> {
-                resumeRecording()
-                isPaused = false
-            }
             isRecording -> {
                 pauseRecording()
-                isPaused = true
             }
             else -> {
                 try {
@@ -70,7 +64,6 @@ class TranslateViewModel : ViewModel() {
     fun resetRecording() {
         try {
             isRecording = false
-            isPaused = false
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -78,16 +71,16 @@ class TranslateViewModel : ViewModel() {
     
     fun sendRecord() {
         try {
-            isRecording = false
-            isPaused = false
             stopRecording()
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
     
-    private fun stopRecording() {
+    fun stopRecording() {
+        isRecording = false
         recorder.stop()
+        sendRecord()
     }
     
     private fun pauseRecording() {
