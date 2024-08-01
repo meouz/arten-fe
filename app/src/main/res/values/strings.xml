@@ -2,6 +2,15 @@
     <string name="app_name">Arten</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_account">Register Account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="register_me">Register Me</string>
+    <string name="already_registered">Already registered? Back to</string>
+    <string name="login_underline"><u>Login</u></string>
     <string name="record_voice">Record Voice</string>
     <string name="resume_pause_recording">resume/pause recording</string>
     <string name="language">Language</string>

@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#E33A36</color>
+    <color name="blue_light">#6db2ff</color>
+    <color name="pink">#e478e4</color>
+    <color name="orange_dark">#e96b12</color>
     <color name="gray_dark">#424242</color>
     <color name="purple_dark">#441A77</color>
     <color name="green_100">#C8E6C9</color>
@@ -14,4 +17,6 @@
     <color name="green_700">#388E3C</color>
     <color name="green_800">#2E7D32</color>
     <color name="green_900">#1B5E20</color>
+    <color name="blue_100">#BBDEFB</color>
+
 </resources>
