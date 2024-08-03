@@ -47,10 +47,10 @@
         app:strokeWidth="2dp">
 
         <TextView
+            android:id="@+id/tvTranslate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="25dp"
-            android:id="@+id/tvTranslate"
             android:textColor="@color/white" />
     </com.google.android.material.card.MaterialCardView>
 

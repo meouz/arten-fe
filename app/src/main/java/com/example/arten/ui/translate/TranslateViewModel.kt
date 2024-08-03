@@ -1,6 +1,7 @@
 package com.example.arten.ui.translate
 
 import android.media.MediaRecorder
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import java.io.File
 import java.text.SimpleDateFormat
@@ -46,32 +47,9 @@ class TranslateViewModel : ViewModel() {
     }
     
     fun startRecording() {
-        when {
-            isRecording -> {
-                pauseRecording()
-            }
-            else -> {
-                try {
-                    prepareRecorder()
-                    isRecording = true
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-    
-    fun resetRecording() {
         try {
-            isRecording = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-    
-    fun sendRecord() {
-        try {
-            stopRecording()
+            prepareRecorder()
+            isRecording = true
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -80,21 +58,24 @@ class TranslateViewModel : ViewModel() {
     fun stopRecording() {
         isRecording = false
         recorder.stop()
-        sendRecord()
+        // send record to server
     }
     
-    private fun pauseRecording() {
-        recorder.pause()
+    fun resetRecording() {
+        try {
+            recorder.reset()
+            isRecording = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
     
-    private fun resumeRecording() {
-        recorder.resume()
-    }
-    
-    fun switchLanguage() {
+    fun switchLanguage(tvLanguage: TextView, tvLanguageResult: TextView) {
         val temp: String = this.language
         this.language = this.languageResult
         this.languageResult = temp
+        tvLanguage.text = this.language
+        tvLanguageResult.text = this.languageResult
     }
     
     fun setDirPathMediaRecorder(dirPath: String) {

@@ -58,9 +58,7 @@ class RecordFragment : Fragment() {
         btnSwitchLanguage = binding.btnSwitchLanguage
         btnSwitchLanguage.setOnClickListener {
             try {
-                viewModel.switchLanguage()
-                tvLanguage.text = viewModel.language
-                tvLanguageResult.text = viewModel.languageResult
+                viewModel.switchLanguage(tvLanguage, tvLanguageResult)
             } catch (e: Exception) {
                 message(e.message.toString())
             }
