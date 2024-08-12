@@ -20,95 +20,129 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="250dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_username"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="75dp"
+        android:background="@color/orange_dark"
+        android:textColorHint="@color/black"
+        app:cursorColor="@color/gray_dark"
+        app:hintAnimationEnabled="false"
+        app:hintTextColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-
-
-        <EditText
-            android:id="@+id/etUsername"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:autofillHints="name"
-            android:background="@color/orange_dark"
-            android:hint="Username"
-            android:inputType="text"
-            android:paddingHorizontal="5dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="@string/username"
+            android:inputType="textPersonName"
             android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+            android:textColorHint="@color/gray_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etEmail"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/orange_dark"
+        android:textColorHint="@color/black"
+        app:cursorColor="@color/gray_dark"
+        app:hintAnimationEnabled="false"
+        app:hintTextColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/til_username">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:autofillHints="emailAddress"
-            android:background="@color/orange_dark"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:paddingHorizontal="5dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+            android:textColorHint="@color/gray_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/orange_dark" />
-    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/orange_dark"
+        app:layout_constraintStart_toStartOf="@+id/til_email"
+        app:layout_constraintTop_toBottomOf="@+id/til_email" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="250dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout">
+        android:layout_marginTop="20dp"
+        android:background="@color/orange_dark"
+        android:textColorHint="@color/black"
+        app:cursorColor="@color/gray_dark"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/gray_dark"
+        app:hintAnimationEnabled="false"
+        app:hintTextColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/til_email">
 
-        <EditText
-            android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:autofillHints="password"
-            android:background="@color/orange_dark"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:paddingHorizontal="5dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+            android:textColorHint="@color/gray_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etConfirmPassword"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirm_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/orange_dark"
+        android:textColorHint="@color/black"
+        app:cursorColor="@color/gray_dark"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/gray_dark"
+        app:hintAnimationEnabled="false"
+        app:hintTextColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/til_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_confirm_password"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:autofillHints="password"
-            android:background="@color/orange_dark"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:paddingHorizontal="5dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+            android:textColorHint="@color/gray_dark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/orange_dark" />
-    </LinearLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/orange_dark"
+        app:layout_constraintStart_toStartOf="@+id/til_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
 
     <TextView
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
         android:backgroundTint="@color/green_400"
         android:gravity="center"
@@ -118,10 +152,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
 
     <TextView
         android:id="@+id/textView5"
@@ -132,11 +166,11 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintHorizontal_bias="0.422"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/btnLogin"
+        android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
@@ -146,5 +180,33 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

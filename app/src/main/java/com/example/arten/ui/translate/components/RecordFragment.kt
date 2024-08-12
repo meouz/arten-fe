@@ -45,13 +45,13 @@ class RecordFragment : Fragment() {
         btnRecord = binding.btnRecord
         btnRecord.setOnClickListener {
             if (viewModel.isRecording) {
-                viewModel.startRecording()
-                btnRecord.setImageResource(R.drawable.btn_stop)
-                btnCancel.visibility = View.VISIBLE
-            } else {
                 viewModel.stopRecording()
                 btnRecord.setImageResource(R.drawable.btn_record)
                 btnCancel.visibility = View.GONE
+            } else {
+                viewModel.startRecording()
+                btnRecord.setImageResource(R.drawable.btn_stop)
+                btnCancel.visibility = View.VISIBLE
             }
         }
         

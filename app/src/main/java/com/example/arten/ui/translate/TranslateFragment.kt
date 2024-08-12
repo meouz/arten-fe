@@ -18,7 +18,7 @@ class TranslateFragment : Fragment() {
     ): View {
         _binding = FragmentTranslateBinding.inflate(inflater, container, false)
         
-        binding.tvTranslate.text = "Translate"
+//        binding.tvTranslate.text = "Translate"
         
         return binding.root
     }
