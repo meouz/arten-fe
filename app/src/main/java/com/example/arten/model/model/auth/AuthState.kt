@@ -1,4 +1,4 @@
-package com.example.arten.model.model
+package com.example.arten.model.model.auth
 
 data class AuthState(
     val isLoading: Boolean = false,

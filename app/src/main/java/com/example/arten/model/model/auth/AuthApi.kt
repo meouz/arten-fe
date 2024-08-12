@@ -1,24 +1,14 @@
 package com.example.arten.model.model.auth
 
-import retrofit2.http.Body
+import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthApi {
     
-    @POST("signup")
-    suspend fun signUp(
-        @Body request: AuthRequest
-    ): TokenResponse
-    
-    @POST("signin")
-    suspend fun signIn(
-        @Body request: AuthRequest
-    ): TokenResponse
-    
-    @GET("authenticate")
-    suspend fun authenticate(
-        @Header("Authorization") token: String
-    )
+    @GET("login")
+    fun checkUserLogin(
+        @Query("password") password: String,
+        @Query("email") email: String
+    ):Call<ResponseLogin>
 }
