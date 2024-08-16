@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Arten</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_account">Register Account</string>
     <string name="email">Email</string>
@@ -20,4 +19,9 @@
     <string name="english">English</string>
     <string name="indonesia">Indonesia</string>
     <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="resend_otp"><u>Resend OTP</u></string>
+    <string name="get_otp_code">Get OTP Code</string>
+    <string name="we_will_send_an_otp_code_nto_verify_your_account">We will send an OTP code\nto verify your account</string>
+    <string name="verify">Verify</string>
 </resources>

@@ -6,16 +6,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.databinding.ActivityLoginBinding
 import com.example.arten.model.model.auth.RClient
-import com.example.arten.model.model.auth.ResponseLogin
+import com.example.arten.model.model.auth.data.LoginRequest
+import com.example.arten.model.model.auth.data.LoginResponse
+import com.example.arten.model.model.auth.data.LoginResponseData
 import com.example.arten.model.model.pref.PrefManager
 import com.example.arten.ui.translate.TranslateActivity
+import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var prefManager: PrefManager
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +43,12 @@ class LoginActivity : AppCompatActivity() {
     }
     
     private fun login() {
-        val email = binding.etEmail.text.toString().trim()
+        val username = binding.etUsername.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
         
-        if (email.isEmpty()) {
-            binding.etEmail.error = "Email is required"
-            binding.etEmail.requestFocus()
+        if (username.isEmpty()) {
+            binding.etUsername.error = "Email is required"
+            binding.etUsername.requestFocus()
             return
         }
         
@@ -55,34 +58,56 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         
-        RClient.instance.checkUserLogin(password, email).enqueue(object : Callback<ResponseLogin> {
-            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null) {
-                        prefManager.setLogin(true)
-                        prefManager.setUsername(body.username)
-                        prefManager.setToken(body.token)
-                        prefManager.setEmail(body.email)
+        RClient.instance.userLogin(LoginRequest(username, password))
+            .enqueue(object : Callback<LoginResponse> {
+                
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
                         
-                        startActivity(Intent(this@LoginActivity, TranslateActivity::class.java))
-                        finish()
-                    }
-                } else {
-                    val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
-                    val messageError = JSONObject(jsonObj.getString("message"))
-                    
-                    if (messageError.getString("message") == "Invalid email") {
-                        binding.etEmail.error = messageError.getString("error")
-                        binding.etPassword.text?.clear()
-                        binding.etEmail.requestFocus()
+                        body?.let {
+                            if (it.data is Map<*, *>) {
+                                val gson = Gson()
+                                val jsonData = gson.toJsonTree(it.data).asJsonObject
+                                val responseData = gson.fromJson(jsonData, LoginResponseData::class.java)
+                                
+                                prefManager.setLogin(true)
+                                prefManager.setUsername(responseData.username)
+                                prefManager.setToken(responseData.token)
+                                
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        TranslateActivity::class.java
+                                    )
+                                )
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    body.message + " " + body.data,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else {
+                        val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                        val messageError = JSONObject(jsonObj.getString("message"))
+                        
+                        if (messageError.getString("message") == "Invalid email") {
+                            binding.etUsername.error = messageError.getString("error")
+                            binding.etPassword.text?.clear()
+                            binding.etUsername.requestFocus()
+                        }
                     }
                 }
-            }
-            
-            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
-            }
-        })
+                
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }

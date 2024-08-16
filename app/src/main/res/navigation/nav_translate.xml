@@ -10,10 +10,4 @@
         android:name="com.example.arten.ui.translate.TranslateFragment"
         android:label="fragment_translate"
         tools:layout="@layout/fragment_translate" />
-
-    <fragment
-        android:id="@+id/recordFragment"
-        android:name="com.example.arten.ui.translate.components.RecordFragment"
-        android:label="fragment_record"
-        tools:layout="@layout/fragment_record" />
 </navigation>
