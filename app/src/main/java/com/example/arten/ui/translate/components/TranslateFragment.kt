@@ -1,4 +1,4 @@
-package com.example.arten.ui.translate
+package com.example.arten.ui.translate.components
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.example.arten.model.model.auth
+package com.example.arten.model.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

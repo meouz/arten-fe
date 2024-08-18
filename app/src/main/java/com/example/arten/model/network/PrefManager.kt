@@ -1,4 +1,4 @@
-package com.example.arten.model.model.pref
+package com.example.arten.model.network
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -23,7 +23,7 @@ class PrefManager(var context: Context) {
     }
     
     fun setToken(token: String) {
-        editor.putString("token", token)
+        editor.putString("jwtToken", token)
         editor.commit()
     }
     

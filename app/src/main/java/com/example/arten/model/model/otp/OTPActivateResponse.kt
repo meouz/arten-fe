@@ -1,19 +1,19 @@
-package com.example.arten.model.model.auth.data
+package com.example.arten.model.model.otp
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class OTPActivateResponse(
     val status: Any,
     val message: String,
     val data: Any,
 )
 
-data class LoginResponseStatus(
+data class OTPActivateResponseStatus(
     val code: Int,
     val isSuccess: Boolean,
 )
 
-data class LoginResponseData(
+data class OTPActivateResponseData(
     val username: String,
     @SerializedName("jwtToken") val token: String,
 )
