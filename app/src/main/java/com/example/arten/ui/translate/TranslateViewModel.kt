@@ -2,7 +2,14 @@ package com.example.arten.ui.translate
 
 import android.media.MediaRecorder
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.arten.model.model.translate.TranslateResponse
+import com.example.arten.model.network.PrefManager
+import com.example.arten.model.network.RClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -13,6 +20,7 @@ class TranslateViewModel : ViewModel() {
         lateinit var dirPathMediaRecorder: String
     }
     
+    private lateinit var prefManager: PrefManager
     var isRecording = false
     var permissionGranted = false
     private lateinit var filename: String
@@ -59,6 +67,22 @@ class TranslateViewModel : ViewModel() {
         isRecording = false
         recorder.stop()
         // send record to server
+        RClient.instance.sendAudio("$dirPathMediaRecorder/$filename.mp3", language, languageResult, prefManager.getToken()).enqueue(object :
+            Callback<TranslateResponse> {
+            override fun onResponse(call: Call<TranslateResponse>, response: Response<TranslateResponse>) {
+                if (response.isSuccessful) {
+                    // Record sent successfully
+                    message("Record sent successfully")
+                } else {
+                    // Record sending failed
+                    message("Record sending failed")
+                }
+            }
+            
+            override fun onFailure(call: Call<TranslateResponse>, t: Throwable) {
+                message(t.message.toString())
+            }
+        })
     }
     
     fun resetRecording() {
@@ -80,5 +104,9 @@ class TranslateViewModel : ViewModel() {
     
     fun setDirPathMediaRecorder(dirPath: String) {
         dirPathMediaRecorder = dirPath
+    }
+    
+    private fun message(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
