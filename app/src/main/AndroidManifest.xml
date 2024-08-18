@@ -28,9 +28,6 @@
             android:name=".ui.authentication.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.otp.OtpActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.translate.TranslateActivity"
             android:exported="false" />
         <activity

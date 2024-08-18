@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.R
-import com.example.arten.model.model.auth.RClient
-import com.example.arten.model.model.auth.data.OTPRequest
-import com.example.arten.model.model.auth.data.OTPResponse
-import com.example.arten.model.model.pref.PrefManager
+import com.example.arten.model.network.RClient
+import com.example.arten.model.model.otp.OTPRequest
+import com.example.arten.model.model.otp.OTPResponse
+import com.example.arten.model.network.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -2,16 +2,19 @@ package com.example.arten.ui.otp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.R
-import com.example.arten.model.model.auth.RClient
-import com.example.arten.model.model.auth.data.OTPActivateRequest
-import com.example.arten.model.model.auth.data.OTPActivateResponse
-import com.example.arten.model.model.auth.data.OTPRequest
-import com.example.arten.model.model.auth.data.OTPResponse
-import com.example.arten.model.model.pref.PrefManager
+import com.example.arten.model.network.RClient
+import com.example.arten.model.model.otp.OTPActivateRequest
+import com.example.arten.model.model.otp.OTPActivateResponse
+import com.example.arten.model.model.otp.OTPActivateResponseData
+import com.example.arten.model.model.otp.OTPRequest
+import com.example.arten.model.model.otp.OTPResponse
+import com.example.arten.model.network.PrefManager
 import com.example.arten.ui.translate.TranslateActivity
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,31 +27,60 @@ class OtpVerifyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_otp_verify)
         
         prefManager = PrefManager(this)
+        
+        val otpSentTo = findViewById<TextView>(R.id.otpSentTo)
+        otpSentTo.append(prefManager.getEmail())
+        
+        val resendOtp = findViewById<TextView>(R.id.resendOtp)
+        resendOtp.setOnClickListener {
+            resendOtp()
+        }
+        
+        val verifyOtp = findViewById<TextView>(R.id.verifyOtp)
+        verifyOtp.setOnClickListener {
+            verifyOtp()
+        }
     }
     
-    fun resendOtp(view: View) {
+    fun resendOtp() {
         // Resend the OTP code
         val username = prefManager.getUsername()
+        
         username?.let {
             RClient.instance.sendOtp(OTPRequest(username))
                 .enqueue(object : Callback<OTPResponse> {
-                    override fun onResponse(call: Call<OTPResponse>, response: Response<OTPResponse>) {
+                    override fun onResponse(
+                        call: Call<OTPResponse>,
+                        response: Response<OTPResponse>,
+                    ) {
                         if (response.isSuccessful) {
-                            // OTP code sent successfully
+                            Toast.makeText(
+                                this@OtpVerifyActivity,
+                                "OTP code sent successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         } else {
                             // OTP code sending failed
+                            Toast.makeText(
+                                this@OtpVerifyActivity,
+                                "Failed to send OTP code\nTry again later",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        TODO("Not yet implemented")
                     }
                     
                     override fun onFailure(call: Call<OTPResponse>, t: Throwable) {
-                        TODO("Not yet implemented")
+                        Toast.makeText(
+                            this@OtpVerifyActivity,
+                            "Failed to send OTP code\nTry again later",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 })
         }
     }
     
-    fun verifyOtp(view: View) {
+    fun verifyOtp() {
         val username = PrefManager(this).getUsername()
         val otp =
             R.id.otp1.toString() + R.id.otp2.toString() + R.id.otp3.toString() + R.id.otp4.toString()
@@ -62,15 +94,34 @@ class OtpVerifyActivity : AppCompatActivity() {
                         response: Response<OTPActivateResponse>,
                     ) {
                         if (response.isSuccessful) {
-                            // OTP code verified successfully
+                            val body = response.body()
                             
-                            // Redirect to the home screen
-                            val intent = Intent(this@OtpVerifyActivity, TranslateActivity::class.java)
-                            startActivity(intent)
+                            body?.let {
+                                if (body.data is Map<*, *>) {
+                                    // OTP code verified successfully
+                                    val gson = Gson()
+                                    val jsonData = gson.toJsonTree(it.data).asJsonObject
+                                    val responseData =
+                                        gson.fromJson(jsonData, OTPActivateResponseData::class.java)
+                                    
+                                    // Save the token to the shared preferences
+                                    prefManager.setToken(responseData.token)
+                                    
+                                    // Redirect to the home screen
+                                    val intent =
+                                        Intent(
+                                            this@OtpVerifyActivity,
+                                            TranslateActivity::class.java
+                                        )
+                                    startActivity(intent)
+                                } else {
+                                    TODO("Not yet implemented")
+                                }
+                            }
                         } else {
                             // OTP code verification failed
+                            TODO("Not yet implemented")
                         }
-                        TODO("Not yet implemented")
                     }
                     
                     override fun onFailure(call: Call<OTPActivateResponse>, t: Throwable) {
