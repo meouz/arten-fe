@@ -2,14 +2,15 @@ package com.example.arten.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.databinding.ActivityLoginBinding
-import com.example.arten.model.model.auth.RClient
-import com.example.arten.model.model.auth.data.LoginRequest
-import com.example.arten.model.model.auth.data.LoginResponse
-import com.example.arten.model.model.auth.data.LoginResponseData
-import com.example.arten.model.model.pref.PrefManager
+import com.example.arten.model.network.RClient
+import com.example.arten.model.model.auth.LoginRequest
+import com.example.arten.model.model.auth.LoginResponse
+import com.example.arten.model.model.auth.LoginResponseData
+import com.example.arten.model.network.PrefManager
 import com.example.arten.ui.translate.TranslateActivity
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -54,6 +55,12 @@ class LoginActivity : AppCompatActivity() {
         
         if (password.isEmpty()) {
             binding.etPassword.error = "Password is required"
+            binding.etPassword.requestFocus()
+            return
+        }
+        
+        if (password.length < 8) {
+            binding.etPassword.error = "Password must be at least 8 characters"
             binding.etPassword.requestFocus()
             return
         }
@@ -110,4 +117,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
     }
+    
+    fun Login(view: View) {}
+    fun goRegister(view: View) {}
 }

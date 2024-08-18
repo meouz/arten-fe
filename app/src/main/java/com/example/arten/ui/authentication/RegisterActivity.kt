@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.databinding.ActivityRegisterBinding
-import com.example.arten.model.model.auth.RClient
-import com.example.arten.model.model.auth.data.RegisterRequest
-import com.example.arten.model.model.auth.data.RegisterResponse
-import com.example.arten.model.model.auth.data.RegisterResponseData
-import com.example.arten.model.model.pref.PrefManager
+import com.example.arten.model.network.RClient
+import com.example.arten.model.model.auth.RegisterRequest
+import com.example.arten.model.model.auth.RegisterResponse
+import com.example.arten.model.model.auth.RegisterResponseData
+import com.example.arten.model.network.PrefManager
 import com.example.arten.ui.otp.OtpSendActivity
 import com.google.gson.Gson
 import org.json.JSONObject
