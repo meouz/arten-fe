@@ -24,4 +24,10 @@
     <string name="get_otp_code">Get OTP Code</string>
     <string name="we_will_send_an_otp_code_nto_verify_your_account">We will send an OTP code\nto verify your account</string>
     <string name="verify">Verify</string>
+    <string name="we_have_sent_an_otp_code_nto">We have sent an OTP code\nto</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="switch_language">Switch Language</string>
+    <string name="cancel">Cancel</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/translateFragment"
-        android:name="com.example.arten.ui.translate.TranslateFragment"
+        android:name="com.example.arten.ui.translate.components.TranslateFragment"
         android:label="fragment_translate"
         tools:layout="@layout/fragment_translate" />
 </navigation>

@@ -8,7 +8,7 @@
     android:paddingHorizontal="40dp"
     android:paddingTop="40dp"
     android:paddingBottom="30dp"
-    tools:context=".ui.translate.TranslateFragment">
+    tools:context=".ui.translate.components.TranslateFragment">
 
     <TextView
         android:id="@+id/tvAppName"
@@ -27,7 +27,7 @@
         android:id="@+id/ibProfile"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:contentDescription="Profile"
+        android:contentDescription="@string/profile"
         app:layout_constraintBottom_toBottomOf="@+id/tvAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvAppName" />

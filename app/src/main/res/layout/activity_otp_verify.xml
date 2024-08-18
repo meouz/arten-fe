@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_marginBottom="50dp"
-        android:text="OTP Verification"
+        android:text="@string/otp_verification"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -24,11 +24,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/otpSentTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="we have sent OTP code\nto "
-        android:textColor="@color/white" />
+        android:text="@string/we_have_sent_an_otp_code_nto"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,47 +42,56 @@
 
         <EditText
             android:id="@+id/otp1"
-            android:layout_width="45dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="15dp"
+            android:autofillHints="phone"
             android:background="@drawable/rectangle_green"
             android:gravity="center"
             android:inputType="number"
+            android:labelFor="@+id/otp1"
             android:maxLength="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/otp2"
-            android:layout_width="45dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="15dp"
+            android:autofillHints="phone"
             android:background="@drawable/rectangle_green"
             android:gravity="center"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/otp3"
-            android:layout_width="45dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="15dp"
+            android:autofillHints="phone"
             android:background="@drawable/rectangle_green"
             android:gravity="center"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/otp4"
-            android:layout_width="45dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="15dp"
+            android:autofillHints="phone"
             android:background="@drawable/rectangle_green"
             android:gravity="center"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="25sp" />
     </LinearLayout>
 
     <TextView
@@ -88,9 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:onClick="resendOtp"
         android:text="@string/resend_otp"
         android:textColor="@color/pink"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
@@ -100,7 +111,6 @@
         android:layout_marginTop="200dp"
         android:background="@color/black"
         android:gravity="center"
-        android:onClick="verifyOtp"
         android:paddingHorizontal="30dp"
         android:paddingVertical="15dp"
         android:text="@string/verify"
