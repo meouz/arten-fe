@@ -1,4 +1,4 @@
-package com.example.arten.model.network
+package com.example.arten.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,11 +6,12 @@ import android.content.SharedPreferences
 class PrefManager(var context: Context) {
     private val privateMode = 0
     
-    private val prefName  = "SharedPref"
+    private val prefName = "SharedPref"
     private val isLogin = "IsLoggedIn"
+    private val isVerify = "isVerified"
     
-    private var pref:SharedPreferences = context.getSharedPreferences(prefName, privateMode)
-    private var editor:SharedPreferences.Editor = pref.edit()
+    private var pref: SharedPreferences = context.getSharedPreferences(prefName, privateMode)
+    private var editor: SharedPreferences.Editor = pref.edit()
     
     fun setLogin(isLoggedIn: Boolean) {
         editor.putBoolean(isLogin, isLoggedIn)
@@ -23,12 +24,17 @@ class PrefManager(var context: Context) {
     }
     
     fun setToken(token: String) {
-        editor.putString("jwtToken", token)
+        editor.putString("token", token)
         editor.commit()
     }
     
     fun setEmail(email: String) {
         editor.putString("email", email)
+        editor.commit()
+    }
+    
+    fun setVerified(isVerified: Boolean) {
+        editor.putBoolean(isVerify, isVerified)
         editor.commit()
     }
     
@@ -51,5 +57,9 @@ class PrefManager(var context: Context) {
     fun clear() {
         editor.clear()
         editor.commit()
+    }
+    
+    fun isVerified(): Boolean {
+        return pref.getBoolean(isVerify, false)
     }
 }

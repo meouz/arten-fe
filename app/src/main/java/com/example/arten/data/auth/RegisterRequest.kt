@@ -1,4 +1,4 @@
-package com.example.arten.model.model.auth
+package com.example.arten.data.auth
 
 data class RegisterRequest(
     val name: String,

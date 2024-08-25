@@ -1,4 +1,4 @@
-package com.example.arten.model.model.otp
+package com.example.arten.data.otp
 
 data class OTPRequest(
     val username: String,
