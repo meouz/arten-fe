@@ -1,15 +1,13 @@
 package com.example.arten.ui.translate
 
 import android.media.MediaRecorder
+import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.example.arten.model.model.translate.TranslateResponse
-import com.example.arten.model.network.PrefManager
-import com.example.arten.model.network.RClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.arten.domain.repository.TranslateRepository
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,13 +18,15 @@ class TranslateViewModel : ViewModel() {
         lateinit var dirPathMediaRecorder: String
     }
     
-    private lateinit var prefManager: PrefManager
+    private val repository = TranslateRepository()
     var isRecording = false
     var permissionGranted = false
     private lateinit var filename: String
     private lateinit var recorder: MediaRecorder
-    var language: String = "English"
+    var result: String = ""
+    var originLanguage: String = "English"
     var languageResult: String = "Indonesia"
+    var token: String = ""
     
     private fun prepareRecorder() {
         val file = File(dirPathMediaRecorder)
@@ -67,22 +67,25 @@ class TranslateViewModel : ViewModel() {
         isRecording = false
         recorder.stop()
         // send record to server
-        RClient.instance.sendAudio("$dirPathMediaRecorder/$filename.mp3", language, languageResult, prefManager.getToken()).enqueue(object :
-            Callback<TranslateResponse> {
-            override fun onResponse(call: Call<TranslateResponse>, response: Response<TranslateResponse>) {
-                if (response.isSuccessful) {
-                    // Record sent successfully
-                    message("Record sent successfully")
-                } else {
-                    // Record sending failed
-                    message("Record sending failed")
-                }
-            }
-            
-            override fun onFailure(call: Call<TranslateResponse>, t: Throwable) {
-                message(t.message.toString())
-            }
-        })
+        
+        val file: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "file", filename, RequestBody.create(
+                MediaType.parse("audio/mp3"), File("$dirPathMediaRecorder/$filename.mp3")
+            )
+        )
+        
+        val fileSize = File("$dirPathMediaRecorder/$filename.mp3").length()
+        
+        Log.d(
+            "AudioFileSize",
+            ((fileSize / 1024).toString() + "." + (fileSize % 1024).toString() + "kb")
+        )
+        
+        result = repository.translateText(
+            originLanguage,
+            languageResult,
+            repository.transcribeVoice(file, originLanguage)
+        )
     }
     
     fun resetRecording() {
@@ -95,10 +98,10 @@ class TranslateViewModel : ViewModel() {
     }
     
     fun switchLanguage(tvLanguage: TextView, tvLanguageResult: TextView) {
-        val temp: String = this.language
-        this.language = this.languageResult
+        val temp: String = this.originLanguage
+        this.originLanguage = this.languageResult
         this.languageResult = temp
-        tvLanguage.text = this.language
+        tvLanguage.text = this.originLanguage
         tvLanguageResult.text = this.languageResult
     }
     
@@ -106,7 +109,8 @@ class TranslateViewModel : ViewModel() {
         dirPathMediaRecorder = dirPath
     }
     
-    private fun message(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    fun checkHistory() {
+        Log.d("token", token)
+        repository.history(token)
     }
 }

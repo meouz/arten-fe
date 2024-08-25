@@ -24,10 +24,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/ibProfile"
+        android:id="@+id/btnHistory"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:contentDescription="@string/profile"
+        android:contentDescription="@string/history"
+        android:src="@drawable/ic_history"
         app:layout_constraintBottom_toBottomOf="@+id/tvAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvAppName" />

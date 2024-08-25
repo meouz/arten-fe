@@ -6,15 +6,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.R
-import com.example.arten.model.network.RClient
-import com.example.arten.model.model.otp.OTPActivateRequest
-import com.example.arten.model.model.otp.OTPActivateResponse
-import com.example.arten.model.model.otp.OTPActivateResponseData
-import com.example.arten.model.model.otp.OTPRequest
-import com.example.arten.model.model.otp.OTPResponse
-import com.example.arten.model.network.PrefManager
+import com.example.arten.data.ResponseData
+import com.example.arten.data.otp.OTPActivateRequest
+import com.example.arten.data.otp.OTPRequest
+import com.example.arten.utils.PrefManager
+import com.example.arten.utils.RClient
 import com.example.arten.ui.translate.TranslateActivity
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +26,7 @@ class OtpVerifyActivity : AppCompatActivity() {
         prefManager = PrefManager(this)
         
         val otpSentTo = findViewById<TextView>(R.id.otpSentTo)
-        otpSentTo.append(prefManager.getEmail())
+        otpSentTo.append(" " + prefManager.getEmail())
         
         val resendOtp = findViewById<TextView>(R.id.resendOtp)
         resendOtp.setOnClickListener {
@@ -42,16 +39,16 @@ class OtpVerifyActivity : AppCompatActivity() {
         }
     }
     
-    fun resendOtp() {
+    private fun resendOtp() {
         // Resend the OTP code
         val username = prefManager.getUsername()
         
         username?.let {
             RClient.instance.sendOtp(OTPRequest(username))
-                .enqueue(object : Callback<OTPResponse> {
+                .enqueue(object : Callback<ResponseData> {
                     override fun onResponse(
-                        call: Call<OTPResponse>,
-                        response: Response<OTPResponse>,
+                        call: Call<ResponseData>,
+                        response: Response<ResponseData>,
                     ) {
                         if (response.isSuccessful) {
                             Toast.makeText(
@@ -69,10 +66,10 @@ class OtpVerifyActivity : AppCompatActivity() {
                         }
                     }
                     
-                    override fun onFailure(call: Call<OTPResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseData>, t: Throwable) {
                         Toast.makeText(
                             this@OtpVerifyActivity,
-                            "Failed to send OTP code\nTry again later",
+                            "Something went wrong\nTry again later",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -80,52 +77,49 @@ class OtpVerifyActivity : AppCompatActivity() {
         }
     }
     
-    fun verifyOtp() {
-        val username = PrefManager(this).getUsername()
-        val otp =
-            R.id.otp1.toString() + R.id.otp2.toString() + R.id.otp3.toString() + R.id.otp4.toString()
+    private fun verifyOtp() {
+        val username = prefManager.getUsername()
+        val otp1 = findViewById<TextView>(R.id.otp1).text.toString()
+        val otp2 = findViewById<TextView>(R.id.otp2).text.toString()
+        val otp3 = findViewById<TextView>(R.id.otp3).text.toString()
+        val otp4 = findViewById<TextView>(R.id.otp4).text.toString()
+        
+        val otp = otp1 + otp2 + otp3 + otp4
         
         // Verify the OTP code
         username?.let {
             RClient.instance.activateOtp(OTPActivateRequest(username, otp))
-                .enqueue(object : Callback<OTPActivateResponse> {
+                .enqueue(object : Callback<ResponseData> {
                     override fun onResponse(
-                        call: Call<OTPActivateResponse>,
-                        response: Response<OTPActivateResponse>,
+                        call: Call<ResponseData>,
+                        response: Response<ResponseData>,
                     ) {
                         if (response.isSuccessful) {
-                            val body = response.body()
+                            prefManager.setVerified(true)
                             
-                            body?.let {
-                                if (body.data is Map<*, *>) {
-                                    // OTP code verified successfully
-                                    val gson = Gson()
-                                    val jsonData = gson.toJsonTree(it.data).asJsonObject
-                                    val responseData =
-                                        gson.fromJson(jsonData, OTPActivateResponseData::class.java)
-                                    
-                                    // Save the token to the shared preferences
-                                    prefManager.setToken(responseData.token)
-                                    
-                                    // Redirect to the home screen
-                                    val intent =
-                                        Intent(
-                                            this@OtpVerifyActivity,
-                                            TranslateActivity::class.java
-                                        )
-                                    startActivity(intent)
-                                } else {
-                                    TODO("Not yet implemented")
-                                }
-                            }
+                            finish()
+                            startActivity(
+                                Intent(
+                                    this@OtpVerifyActivity,
+                                    TranslateActivity::class.java
+                                )
+                            )
                         } else {
                             // OTP code verification failed
-                            TODO("Not yet implemented")
+                            Toast.makeText(
+                                this@OtpVerifyActivity,
+                                "Failed to verify OTP code\nTry again later",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                     
-                    override fun onFailure(call: Call<OTPActivateResponse>, t: Throwable) {
-                        TODO("Not yet implemented")
+                    override fun onFailure(call: Call<ResponseData>, t: Throwable) {
+                        Toast.makeText(
+                            this@OtpVerifyActivity,
+                            "Failed to verify OTP code\nTry again later",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 })
         }

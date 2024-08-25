@@ -29,7 +29,7 @@ class RecordFragment : Fragment() {
         binding = FragmentRecordBinding.inflate(inflater, container, false)
         
         tvLanguage = binding.tvLanguage
-        tvLanguage.text = viewModel.language
+        tvLanguage.text = viewModel.originLanguage
         
         tvLanguageResult = binding.tvLanguageResult
         tvLanguageResult.text = viewModel.languageResult

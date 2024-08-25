@@ -2,17 +2,18 @@ package com.example.arten.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.databinding.ActivityRegisterBinding
-import com.example.arten.model.network.RClient
-import com.example.arten.model.model.auth.RegisterRequest
-import com.example.arten.model.model.auth.RegisterResponse
-import com.example.arten.model.model.auth.RegisterResponseData
-import com.example.arten.model.network.PrefManager
+import com.example.arten.data.ResponseData
+import com.example.arten.data.auth.RegisterRequest
+import com.example.arten.data.auth.RegisterResponseData
+import com.example.arten.utils.PrefManager
+import com.example.arten.utils.RClient
 import com.example.arten.ui.otp.OtpSendActivity
 import com.google.gson.Gson
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,17 +27,20 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        prefManager = PrefManager(this)
+        
         binding.btnRegister.setOnClickListener {
             register()
         }
         
         binding.tvLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
             finish()
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
     
     private fun register() {
+        
         val name = binding.etName.text.toString().trim()
         val username = binding.etUsername.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
@@ -54,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
         
-        if (email.isEmpty()) {
+        if (isEmailValid(email)) {
             binding.etEmail.error = "Email is required"
             binding.etEmail.requestFocus()
             return
@@ -66,12 +70,20 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
         
+        if (password.length < 8) {
+            binding.etPassword.error = "Password must be at least 8 characters"
+            binding.etPassword.requestFocus()
+            return
+        }
+        
         RClient.instance.userRegister(RegisterRequest(name, username, password, email))
-            .enqueue(object : Callback<RegisterResponse> {
+            .enqueue(object : Callback<ResponseData> {
                 override fun onResponse(
-                    call: Call<RegisterResponse>,
-                    response: Response<RegisterResponse>,
+                    call: Call<ResponseData>,
+                    response: Response<ResponseData>,
                 ) {
+                    Log.d("RegisterActivity", "onResponse: ${call.request()}")
+                    Log.d("RegisterActivity", "onResponse: ${response.body()}")
                     if (response.isSuccessful) {
                         val body = response.body()
                         
@@ -83,32 +95,30 @@ class RegisterActivity : AppCompatActivity() {
                                     gson.fromJson(jsonData, RegisterResponseData::class.java)
                                 
                                 prefManager.setUsername(responseData.username)
+                                prefManager.setEmail(responseData.email)
                                 
+                                finish()
                                 startActivity(
                                     Intent(
-                                        this@RegisterActivity,
-                                        OtpSendActivity::class.java
+                                        this@RegisterActivity, OtpSendActivity::class.java
                                     )
                                 )
-                                finish()
                             }
                         }
                     } else {
-                        val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
-                        val messageError = JSONObject(jsonObj.getString("message"))
-                        
-                        if (messageError.getString("message") == "Email already used") {
-                            binding.etEmail.error = messageError.getString("error")
-                            binding.etPassword.text?.clear()
-                            binding.etEmail.requestFocus()
-                        }
+                        Toast.makeText(this@RegisterActivity, "Register failed", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
                 
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseData>, t: Throwable) {
                     Toast.makeText(this@RegisterActivity, "Register failed", Toast.LENGTH_SHORT)
                         .show()
                 }
             })
+    }
+    
+    private fun isEmailValid(email: String): Boolean {
+        return email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

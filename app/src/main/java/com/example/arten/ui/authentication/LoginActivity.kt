@@ -2,21 +2,12 @@ package com.example.arten.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.arten.databinding.ActivityLoginBinding
-import com.example.arten.model.network.RClient
-import com.example.arten.model.model.auth.LoginRequest
-import com.example.arten.model.model.auth.LoginResponse
-import com.example.arten.model.model.auth.LoginResponseData
-import com.example.arten.model.network.PrefManager
+import com.example.arten.utils.PrefManager
+import com.example.arten.ui.otp.OtpSendActivity
 import com.example.arten.ui.translate.TranslateActivity
-import com.google.gson.Gson
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -29,9 +20,20 @@ class LoginActivity : AppCompatActivity() {
         
         prefManager = PrefManager(this)
         
+        Log.d("TranslateActivity", "Email: ${prefManager.getEmail()}")
+        Log.d("TranslateActivity", "Username: ${prefManager.getUsername()}")
+        Log.d("TranslateActivity", "Token: ${prefManager.getToken()}")
+        Log.d("TranslateActivity", "LoggedIn: ${prefManager.isLogin()}")
+        Log.d("TranslateActivity", "Verified: ${prefManager.isVerified()}")
+        
         if (prefManager.isLogin()) {
-            startActivity(Intent(this, TranslateActivity::class.java))
             finish()
+            startActivity(Intent(this, TranslateActivity::class.java))
+        }
+
+        if (!prefManager.isVerified() && prefManager.getUsername() != null) {
+            finish()
+            startActivity(Intent(this, OtpSendActivity::class.java))
         }
         
         binding.btnLogin.setOnClickListener {
@@ -39,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         }
         
         binding.tvRegister.setOnClickListener {
+            finish()
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
@@ -48,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.etPassword.text.toString().trim()
         
         if (username.isEmpty()) {
-            binding.etUsername.error = "Email is required"
+            binding.etUsername.error = "Username is required"
             binding.etUsername.requestFocus()
             return
         }
@@ -59,65 +62,6 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         
-        if (password.length < 8) {
-            binding.etPassword.error = "Password must be at least 8 characters"
-            binding.etPassword.requestFocus()
-            return
-        }
         
-        RClient.instance.userLogin(LoginRequest(username, password))
-            .enqueue(object : Callback<LoginResponse> {
-                
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>,
-                ) {
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        
-                        body?.let {
-                            if (it.data is Map<*, *>) {
-                                val gson = Gson()
-                                val jsonData = gson.toJsonTree(it.data).asJsonObject
-                                val responseData = gson.fromJson(jsonData, LoginResponseData::class.java)
-                                
-                                prefManager.setLogin(true)
-                                prefManager.setUsername(responseData.username)
-                                prefManager.setToken(responseData.token)
-                                
-                                startActivity(
-                                    Intent(
-                                        this@LoginActivity,
-                                        TranslateActivity::class.java
-                                    )
-                                )
-                                finish()
-                            } else {
-                                Toast.makeText(
-                                    this@LoginActivity,
-                                    body.message + " " + body.data,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    } else {
-                        val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
-                        val messageError = JSONObject(jsonObj.getString("message"))
-                        
-                        if (messageError.getString("message") == "Invalid email") {
-                            binding.etUsername.error = messageError.getString("error")
-                            binding.etPassword.text?.clear()
-                            binding.etUsername.requestFocus()
-                        }
-                    }
-                }
-                
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
-                }
-            })
     }
-    
-    fun Login(view: View) {}
-    fun goRegister(view: View) {}
 }
